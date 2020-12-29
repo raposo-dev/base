@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import lombok.Data;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Data
@@ -65,23 +67,23 @@ public class ContractDetails {
 
   public boolean cocontratantes;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable
   public List<Contestant> contestants;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable
   public List<Invitee> invitees;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable
   public List<Document> documents;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable
   public List<Contracting> contracting;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable
   public List<Contracted> contracted;
 }

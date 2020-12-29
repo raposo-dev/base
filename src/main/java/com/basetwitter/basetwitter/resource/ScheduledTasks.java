@@ -1,6 +1,6 @@
 package com.basetwitter.basetwitter.resource;
 
-import com.basetwitter.basetwitter.service.FetchBaseService;
+import com.basetwitter.basetwitter.service.BaseService;
 import java.io.IOException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -9,20 +9,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledTasks {
 
-  private final FetchBaseService fetchBaseService;
+  private final BaseService baseService;
 
-  public ScheduledTasks(FetchBaseService fetchBaseService) {
-    this.fetchBaseService = fetchBaseService;
+  public ScheduledTasks(BaseService baseService) {
+    this.baseService = baseService;
   }
+
   @Async
   @Scheduled(fixedDelay = 100000)
-  public void runFetchBase() throws IOException {
+  public void runGetContracts() throws IOException {
 
-     fetchBaseService.insertContracts();
+    baseService.insertContracts();
   }
+
   @Async
-  @Scheduled(fixedDelay =  100000)
+  @Scheduled(fixedDelay = 100000)
   public void runUpdateContractDetails() {
-    fetchBaseService.insertContractDetails();
+    baseService.insertContractDetails();
   }
 }

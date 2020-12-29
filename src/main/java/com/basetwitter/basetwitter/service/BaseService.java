@@ -2,9 +2,9 @@ package com.basetwitter.basetwitter.service;
 
 import java.io.IOException;
 
-public interface FetchBaseService {
+public interface BaseService {
 
-  int insertContracts() throws IOException;
+  void insertContracts() throws IOException;
 
   void insertContractDetails();
 }
