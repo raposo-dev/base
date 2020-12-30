@@ -15,7 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) @ActiveProfiles("integration-test")
-class BaseApplicationTests {
+class BaseApplicationTest {
   @Test
   void contextLoads() {
   }
