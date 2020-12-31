@@ -1,11 +1,11 @@
 package com.base.base.service;
 
+import com.base.base.ApplicationConfig;
 import com.base.base.client.BaseDbClient;
 import com.base.base.client.BaseHttpClient;
-import com.base.base.repository.ContractDetailsRepository;
-import com.base.base.ApplicationConfig;
 import com.base.base.models.Contracts;
 import com.base.base.models.contractdetails.ContractDetails;
+import com.base.base.repository.ContractDetailsRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,6 +50,9 @@ public class BaseServiceImpl implements BaseService {
     URL urlResults = new URL(baseUrlResults);
     List<Contracts> contractsList;
     Integer numberOfContracts = baseHttpClient.getNumberOfContracts(urlResults);
+    logger.info(
+        "Got {} contracts from Base, starting to fetch new contracts to database.",
+        numberOfContracts);
     URL urlContracts = new URL(baseUrlContracts);
 
     for (int upperRange = numberOfContracts;
@@ -76,7 +79,7 @@ public class BaseServiceImpl implements BaseService {
   @Override
   public void insertContractDetails() {
     List<Contracts> contractsList = baseDbClient.getListofIdsNotInContractDetails();
-
+    logger.info("Getting Contract Details for {} contracts.", contractsList.size());
     contractsList.stream()
         .map(this::getBaseContractDetails)
         .forEach(contractDetailsRepository::save);
@@ -96,7 +99,8 @@ public class BaseServiceImpl implements BaseService {
         contractDetails = mapContractDetails(build);
       }
     } catch (IOException e) {
-      throw new RuntimeException(e.getMessage());
+      logger.error("Error occurred during request process", e);
+      throw new RuntimeException(e);
     }
     return contractDetails;
   }
@@ -108,7 +112,8 @@ public class BaseServiceImpl implements BaseService {
       Contracts[] contracts = mapper.readValue(build.toString(), Contracts[].class);
       contractsList = Arrays.asList(contracts);
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error("Error occurred during Contract mapping", e);
+      throw new RuntimeException(e);
     }
     return contractsList;
   }
@@ -120,7 +125,8 @@ public class BaseServiceImpl implements BaseService {
       contractDetails = mapper.readValue(build.toString(), ContractDetails.class);
 
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error("Error occurred during ContractDetails mapping", e);
+      throw new RuntimeException(e);
     }
     return contractDetails;
   }
