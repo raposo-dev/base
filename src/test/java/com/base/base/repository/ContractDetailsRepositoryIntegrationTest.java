@@ -2,7 +2,6 @@ package com.base.base.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.base.base.models.Contracts;
 import java.math.BigDecimal;
@@ -19,13 +18,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) @ActiveProfiles("integration-test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("integration-test")
 public class ContractDetailsRepositoryIntegrationTest {
 
   @Autowired ContractsRepository contractsRepository;
 
   @Test
-  public void contractShouldBeSaved(){
+  public void contractShouldBeSaved() {
     Contracts contracts = mockedContracts();
     contractsRepository.save(contracts);
 
@@ -37,7 +37,6 @@ public class ContractDetailsRepositoryIntegrationTest {
     assertEquals(contracts.getInitialContractualPrice(), contracts2.getInitialContractualPrice());
     assertEquals(contracts.getObjectBriefDescription(), contracts2.getObjectBriefDescription());
   }
-
 
   private Contracts mockedContracts() {
 
@@ -54,5 +53,4 @@ public class ContractDetailsRepositoryIntegrationTest {
     contracts.setId(20);
     return contracts;
   }
-
 }

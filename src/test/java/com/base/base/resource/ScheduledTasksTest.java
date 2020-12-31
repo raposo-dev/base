@@ -3,6 +3,7 @@ package com.base.base.resource;
 import static org.mockito.Mockito.verify;
 
 import com.base.base.service.BaseService;
+import com.base.base.service.TooManyContractsException;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,7 @@ public class ScheduledTasksTest {
   BaseService baseService;
 
   @Test
-  public void verifyRunGetContractsIsCalled() throws IOException {
+  public void verifyRunGetContractsIsCalled() throws IOException, TooManyContractsException {
     scheduledTasks.runGetContracts();
 
     verify(baseService).insertContracts();

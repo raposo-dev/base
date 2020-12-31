@@ -6,11 +6,11 @@ import com.base.base.client.BaseHttpClient;
 import com.base.base.models.Contracts;
 import com.base.base.models.contractdetails.ContractDetails;
 import com.base.base.repository.ContractDetailsRepository;
+import com.base.base.repository.ContractsRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
@@ -28,6 +28,7 @@ public class BaseServiceImpl implements BaseService {
   final BaseDbClient baseDbClient;
   final ContractDetailsRepository contractDetailsRepository;
   final BaseHttpClient baseHttpClient;
+  final ContractsRepository contractsRepository;
   ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
   @Value("${base.url.results}")
@@ -39,40 +40,52 @@ public class BaseServiceImpl implements BaseService {
   public BaseServiceImpl(
       BaseDbClient baseDbClient,
       ContractDetailsRepository contractDetailsRepository,
-      BaseHttpClient baseHttpClient) {
+      BaseHttpClient baseHttpClient,
+      ContractsRepository contractsRepository) {
     this.baseDbClient = baseDbClient;
     this.contractDetailsRepository = contractDetailsRepository;
     this.baseHttpClient = baseHttpClient;
+    this.contractsRepository = contractsRepository;
   }
 
   @Override
-  public void insertContracts() throws IOException {
+  public void insertContracts() throws IOException, TooManyContractsException {
     URL urlResults = new URL(baseUrlResults);
     List<Contracts> contractsList;
     Integer numberOfContracts = baseHttpClient.getNumberOfContracts(urlResults);
-    logger.info(
-        "Got {} contracts from Base, starting to fetch new contracts to database.",
-        numberOfContracts);
-    URL urlContracts = new URL(baseUrlContracts);
+    logger.info("Got {} contracts from Base", numberOfContracts);
+    long numberOfInsertedContracts = contractsRepository.count();
+    logger.info("Got {} contracts from Contracts Table", numberOfInsertedContracts);
 
-    for (int upperRange = numberOfContracts;
-        upperRange > 0;
-        upperRange = upperRange + NUMBER_OF_STEPS) {
-      int lowerRange = 1;
-      if (upperRange > Math.abs(NUMBER_OF_STEPS)) {
-        lowerRange = upperRange + NUMBER_OF_STEPS + 1;
+    if (numberOfInsertedContracts < numberOfContracts) {
+      logger.info("Missing inserted Contracts in DB, inserting.");
+
+      URL urlContracts = new URL(baseUrlContracts);
+
+      for (int upperRange = numberOfContracts;
+          upperRange > 0;
+          upperRange = upperRange + NUMBER_OF_STEPS) {
+        int lowerRange = 1;
+        if (upperRange > Math.abs(NUMBER_OF_STEPS)) {
+          lowerRange = upperRange + NUMBER_OF_STEPS + 1;
+        }
+
+        BufferedReader resp =
+            baseHttpClient.getBaseResponseBufferedReader(urlContracts, lowerRange, upperRange);
+        StringBuilder build = new StringBuilder();
+        String inputLine;
+
+        while ((inputLine = resp.readLine()) != null) {
+          build.append(inputLine);
+        }
+        contractsList = mapContractsList(build);
+        insertContractsList(contractsList);
       }
+    }
+    logger.info("Got the same number of Contracts, skipping insert.");
 
-      BufferedReader resp =
-          baseHttpClient.getBaseResponseBufferedReader(urlContracts, lowerRange, upperRange);
-      StringBuilder build = new StringBuilder();
-      String inputLine;
-
-      while ((inputLine = resp.readLine()) != null) {
-        build.append(inputLine);
-      }
-      contractsList = mapContractsList(build);
-      insertContractsList(contractsList);
+    if (numberOfInsertedContracts > numberOfContracts) {
+      throw new TooManyContractsException("DB Contracts > Base Contracts");
     }
   }
 
@@ -107,7 +120,7 @@ public class BaseServiceImpl implements BaseService {
 
   private List<Contracts> mapContractsList(StringBuilder build) {
     ObjectMapper mapper = (ObjectMapper) context.getBean("objectMapper");
-    List<Contracts> contractsList = new ArrayList<>();
+    List<Contracts> contractsList;
     try {
       Contracts[] contracts = mapper.readValue(build.toString(), Contracts[].class);
       contractsList = Arrays.asList(contracts);
@@ -120,7 +133,7 @@ public class BaseServiceImpl implements BaseService {
 
   private ContractDetails mapContractDetails(StringBuilder build) {
     ObjectMapper mapper = (ObjectMapper) context.getBean("objectMapper");
-    ContractDetails contractDetails = new ContractDetails();
+    ContractDetails contractDetails;
     try {
       contractDetails = mapper.readValue(build.toString(), ContractDetails.class);
 

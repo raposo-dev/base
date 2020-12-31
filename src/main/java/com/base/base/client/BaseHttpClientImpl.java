@@ -18,34 +18,34 @@ public class BaseHttpClientImpl implements BaseHttpClient {
     BufferedReader rd = getBaseResponseBufferedReader(url);
 
     Integer result;
-    result = getNContractsFromSpan(rd);
+    result = getNumberContractsFromSpan(rd);
     return result;
   }
 
   @Override
   public BufferedReader getBaseResponseBufferedReader(URL url) throws IOException {
-    HttpURLConnection conn = getHttpURLConnection(url);
+    HttpURLConnection conn = getHttpUrlConnection(url);
     return new BufferedReader(new InputStreamReader(conn.getInputStream()));
   }
 
   @Override
   public BufferedReader getBaseResponseBufferedReader(URL url, int lowerRange, int upperRange)
       throws IOException {
-    HttpURLConnection conn = getHttpURLConnection(url);
+    HttpURLConnection conn = getHttpUrlConnection(url);
     conn.setRequestProperty("Content-Type", "application/json");
     conn.setRequestProperty("range", String.format("%s-%s", lowerRange, upperRange));
 
     return new BufferedReader(new InputStreamReader(conn.getInputStream()));
   }
 
-  private HttpURLConnection getHttpURLConnection(URL url) throws IOException {
+  private HttpURLConnection getHttpUrlConnection(URL url) throws IOException {
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestMethod("GET");
 
     return conn;
   }
 
-  private Integer getNContractsFromSpan(BufferedReader rd) throws IOException {
+  private Integer getNumberContractsFromSpan(BufferedReader rd) throws IOException {
     String res = "";
     String line;
     while ((line = rd.readLine()) != null) {

@@ -61,8 +61,6 @@ public class BaseDbClientImpl implements BaseDbClient {
             + "    contract_details cd on contracts.id = cd.id\n"
             + "WHERE cd.id is null";
 
-    return jdbcTemplate.query(
-        sql,
-        BeanPropertyRowMapper.newInstance(Contracts.class));
+    return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Contracts.class));
   }
 }
