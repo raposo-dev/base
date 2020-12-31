@@ -1,6 +1,7 @@
 package com.base.base.resource;
 
 import com.base.base.service.BaseService;
+import com.base.base.service.TooManyContractsException;
 import java.io.IOException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +18,7 @@ public class ScheduledTasks {
 
   @Async
   @Scheduled(fixedDelay = 100000)
-  public void runGetContracts() throws IOException {
+  public void runGetContracts() throws IOException, TooManyContractsException {
 
     baseService.insertContracts();
   }
