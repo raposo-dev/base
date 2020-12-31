@@ -16,14 +16,14 @@ public class ScheduledTasks {
   }
 
   @Async
-  @Scheduled(fixedDelay = 100000, initialDelay = 300000)
+  @Scheduled(fixedDelay = 100000)
   public void runGetContracts() throws IOException {
 
     baseService.insertContracts();
   }
 
   @Async
-  @Scheduled(fixedDelay = 100000, initialDelay = 300000)
+  @Scheduled(fixedDelay = 100000)
   public void runUpdateContractDetails() {
     baseService.insertContractDetails();
   }
