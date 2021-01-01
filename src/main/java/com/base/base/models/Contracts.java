@@ -18,7 +18,7 @@ public class Contracts {
   public String contracting;
   public String contracted;
   public String objectBriefDescription;
-  @JsonDeserialize(using= ContractMoneyDeserializer.class)
+  @JsonDeserialize(using = ContractMoneyDeserializer.class)
   public BigDecimal initialContractualPrice;
   @JsonFormat(pattern = "dd-MM-yyyy")
   public Date signingDate;
