@@ -49,7 +49,7 @@ public class BaseServiceImpl implements BaseService {
   }
 
   @Override
-  public void insertContracts() throws IOException, TooManyContractsException {
+  public void insertContracts() throws IOException {
     URL urlResults = new URL(baseUrlResults);
     List<Contracts> contractsList;
     Integer numberOfContracts = baseHttpClient.getNumberOfContracts(urlResults);
@@ -57,35 +57,29 @@ public class BaseServiceImpl implements BaseService {
     long numberOfInsertedContracts = contractsRepository.count();
     logger.info("Got {} contracts from Contracts Table", numberOfInsertedContracts);
 
-    if (numberOfInsertedContracts < numberOfContracts) {
-      logger.info("Missing inserted Contracts in DB, inserting.");
 
-      URL urlContracts = new URL(baseUrlContracts);
+    logger.info("Missing inserted Contracts in DB, inserting.");
 
-      for (int upperRange = numberOfContracts;
-          upperRange > 0;
-          upperRange = upperRange + NUMBER_OF_STEPS) {
-        int lowerRange = 1;
-        if (upperRange > Math.abs(NUMBER_OF_STEPS)) {
-          lowerRange = upperRange + NUMBER_OF_STEPS + 1;
-        }
+    URL urlContracts = new URL(baseUrlContracts);
 
-        BufferedReader resp =
-            baseHttpClient.getBaseResponseBufferedReader(urlContracts, lowerRange, upperRange);
-        StringBuilder build = new StringBuilder();
-        String inputLine;
-
-        while ((inputLine = resp.readLine()) != null) {
-          build.append(inputLine);
-        }
-        contractsList = mapContractsList(build);
-        insertContractsList(contractsList);
+    for (int upperRange = numberOfContracts;
+        upperRange > 0;
+        upperRange = upperRange + NUMBER_OF_STEPS) {
+      int lowerRange = 1;
+      if (upperRange > Math.abs(NUMBER_OF_STEPS)) {
+        lowerRange = upperRange + NUMBER_OF_STEPS + 1;
       }
-    }
-    logger.info("Got the same number of Contracts, skipping insert.");
 
-    if (numberOfInsertedContracts > numberOfContracts) {
-      throw new TooManyContractsException("DB Contracts > Base Contracts");
+      BufferedReader resp =
+          baseHttpClient.getBaseResponseBufferedReader(urlContracts, lowerRange, upperRange);
+      StringBuilder build = new StringBuilder();
+      String inputLine;
+
+      while ((inputLine = resp.readLine()) != null) {
+        build.append(inputLine);
+      }
+      contractsList = mapContractsList(build);
+      insertContractsList(contractsList);
     }
   }
 
@@ -99,7 +93,6 @@ public class BaseServiceImpl implements BaseService {
   }
 
   private ContractDetails getBaseContractDetails(Contracts contracts) {
-    ContractDetails contractDetails = new ContractDetails();
 
     try {
       URL url = new URL(baseUrlContracts + "/" + contracts.getId());
@@ -109,13 +102,18 @@ public class BaseServiceImpl implements BaseService {
 
       while ((inputLine = resp.readLine()) != null) {
         build.append(inputLine);
-        contractDetails = mapContractDetails(build);
       }
+      ContractDetails contractDetails = mapContractDetails(build);
+      if (contractDetails.getId() == 0){
+        contractDetails.setId(contracts.getId());
+      }
+
+      return contractDetails;
     } catch (IOException e) {
       logger.error("Error occurred during request process", e);
       throw new RuntimeException(e);
     }
-    return contractDetails;
+
   }
 
   private List<Contracts> mapContractsList(StringBuilder build) {

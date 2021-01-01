@@ -21,7 +21,8 @@ public class BaseDbClientImpl implements BaseDbClient {
   public int insertContracts(List<Contracts> contractsList) {
     String sql =
         "INSERT INTO contracts\n"
-            + "    (id, contracting_procedure_type, publication_date, contracting, contracted, object_brief_description, initial_contractual_price, signing_date)\n"
+            + "(id, contracting_procedure_type, publication_date, contracting, contracted,"
+            + " object_brief_description, initial_contractual_price, signing_date)\n"
             + "    VALUES (\n"
             + "            ?,?,?,?,?,?,?,?\n"
             + "           )\n"

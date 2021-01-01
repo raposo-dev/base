@@ -1,11 +1,8 @@
 package com.base.base.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -72,7 +69,7 @@ public class BaseServiceTest {
 
   @Test
   public void verifyInsertContractsWhenZeroContractsInDB()
-      throws IOException, TooManyContractsException {
+      throws IOException {
     URL mockedUrlResults = new URL(BASE_URL_RESULTS);
     URL mockedUrlContracts = new URL(BASE_URL_CONTRACTS);
     when(baseHttpClient.getNumberOfContracts(mockedUrlResults))
@@ -103,33 +100,6 @@ public class BaseServiceTest {
         contractsList.get(0).getInitialContractualPrice());
     assertEquals(
         listContractsArgumentCaptor.getValue().get(0).getId(), contractsList.get(0).getId());
-  }
-
-  @Test
-  public void verifyInsertContractsSkippedWhenSameNumberOfContracts()
-      throws IOException, TooManyContractsException {
-    URL mockedUrlResults = new URL(BASE_URL_RESULTS);
-    URL mockedUrlContracts = new URL(BASE_URL_CONTRACTS);
-    when(baseHttpClient.getNumberOfContracts(mockedUrlResults))
-        .thenReturn(NUMBER_OF_BASE_CONTRACTS);
-    when(contractsRepository.count()).thenReturn(100L);
-
-    baseService.insertContracts();
-
-    verify(baseHttpClient, never()).getBaseResponseBufferedReader(any());
-    verify(baseDbClient, never()).insertContracts(any());
-  }
-
-  @Test
-  public void verifyInsertContractsThrowsExceptionWhenMoreContractsThanBase()
-      throws IOException, TooManyContractsException {
-    URL mockedUrlResults = new URL(BASE_URL_RESULTS);
-    URL mockedUrlContracts = new URL(BASE_URL_CONTRACTS);
-    when(baseHttpClient.getNumberOfContracts(mockedUrlResults))
-        .thenReturn(NUMBER_OF_BASE_CONTRACTS);
-    when(contractsRepository.count()).thenReturn(1000L);
-
-    assertThrows(TooManyContractsException.class, () -> baseService.insertContracts());
   }
 
   @Test
