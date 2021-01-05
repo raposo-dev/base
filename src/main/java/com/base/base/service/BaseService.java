@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public interface BaseService {
 
-  void insertContracts() throws IOException, TooManyContractsException;
+  void insertContracts() throws IOException;
 
   void insertContractDetails();
 }

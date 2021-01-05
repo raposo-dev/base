@@ -18,7 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 public class BaseHttpClientTest {
 
-  private static final String MOCKED_URL = "http://validurl.com";
   private static final String MOCKED_RESP = "<html>\nmockedline\n</html>";
 
   @InjectMocks
