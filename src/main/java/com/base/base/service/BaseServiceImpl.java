@@ -54,11 +54,7 @@ public class BaseServiceImpl implements BaseService {
     List<Contracts> contractsList;
     Integer numberOfContracts = baseHttpClient.getNumberOfContracts(urlResults);
     logger.info("Got {} contracts from Base", numberOfContracts);
-    long numberOfInsertedContracts = contractsRepository.count();
-    logger.info("Got {} contracts from Contracts Table", numberOfInsertedContracts);
-
-
-    logger.info("Missing inserted Contracts in DB, inserting.");
+    logger.info("Inserting missing Contracts into Contracts Table.");
 
     URL urlContracts = new URL(baseUrlContracts);
 
