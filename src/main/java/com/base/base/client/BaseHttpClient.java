@@ -6,7 +6,7 @@ import java.net.URL;
 
 public interface BaseHttpClient {
 
-  Integer getNumberOfContracts(URL url) throws IOException;
+  Integer getNumberOfContracts(String url) throws IOException;
 
   BufferedReader getBaseResponseBufferedReader(URL url) throws IOException;
 
