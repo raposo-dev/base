@@ -5,9 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "invitees")
 public class Invitee {
@@ -18,4 +16,36 @@ public class Invitee {
 
   @ManyToMany(mappedBy = "invitees")
   private Set<ContractDetails> contractDetails;
+
+  public String getNif() {
+    return nif;
+  }
+
+  public void setNif(String nif) {
+    this.nif = nif;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public Set<ContractDetails> getContractDetails() {
+    return contractDetails;
+  }
+
+  public void setContractDetails(Set<ContractDetails> contractDetails) {
+    this.contractDetails = contractDetails;
+  }
 }
