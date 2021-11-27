@@ -16,7 +16,7 @@ public class ScheduledTasks {
   }
 
   @Async
-  @Scheduled(fixedDelay = 100000, initialDelay = 60000)
+  @Scheduled(fixedDelay = 100000)
   public void runGetContracts() throws IOException {
 
     baseService.insertContracts();

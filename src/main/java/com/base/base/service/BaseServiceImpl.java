@@ -50,9 +50,8 @@ public class BaseServiceImpl implements BaseService {
 
   @Override
   public void insertContracts() throws IOException {
-    URL urlResults = new URL(baseUrlResults);
     List<Contracts> contractsList;
-    Integer numberOfContracts = baseHttpClient.getNumberOfContracts(urlResults);
+    Integer numberOfContracts = 1387283;
     logger.info("Got {} contracts from Base", numberOfContracts);
     logger.info("Inserting missing Contracts into Contracts Table.");
 
