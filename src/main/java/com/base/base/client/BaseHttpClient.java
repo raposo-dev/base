@@ -6,10 +6,10 @@ import java.net.URL;
 
 public interface BaseHttpClient {
 
-  Integer getNumberOfContracts(String url) throws IOException;
+	Integer getNumberOfContracts(String url) throws IOException;
 
-  BufferedReader getBaseResponseBufferedReader(URL url) throws IOException;
+	BufferedReader getBaseResponseBufferedReader(URL url) throws IOException;
 
-  BufferedReader getBaseResponseBufferedReader(URL url, int lowerRange, int upperRange)
-      throws IOException;
+	BufferedReader getBaseResponseBufferedReader(URL url, int lowerRange, int upperRange)
+			throws IOException;
 }

@@ -1,11 +1,6 @@
 package com.base.base.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.base.base.models.Contracts;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +10,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @Testcontainers
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -22,7 +23,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("integration-test")
 public class ContractDetailsRepositoryIntegrationTest {
 
-  @Autowired ContractsRepository contractsRepository;
+  @Autowired
+  ContractsRepository contractsRepository;
 
   @Test
   public void contractShouldBeSaved() {
@@ -48,7 +50,7 @@ public class ContractDetailsRepositoryIntegrationTest {
     contracts.setContracting("Câmara Municipal da Lousã");
     contracts.setContracted("Ana Sofia Francisco Tomás");
     contracts.setObjectBriefDescription(
-        "Elaboração das fichas de mão-de-obra, de máquinas e viaturas, para posterior inserção na aplicação informática – Contabilidade de Custos");
+            "Elaboração das fichas de mão-de-obra, de máquinas e viaturas, para posterior inserção na aplicação informática – Contabilidade de Custos");
     contracts.setInitialContractualPrice(bd);
     contracts.setId(20);
     return contracts;

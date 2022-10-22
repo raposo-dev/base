@@ -1,30 +1,31 @@
 package com.base.base.resource;
 
 import com.base.base.service.BaseService;
-import java.io.IOException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public class ScheduledTasks {
 
-  private final BaseService baseService;
+	private final BaseService baseService;
 
-  public ScheduledTasks(BaseService baseService) {
-    this.baseService = baseService;
-  }
+	public ScheduledTasks(BaseService baseService) {
+		this.baseService = baseService;
+	}
 
-  @Async
-  @Scheduled(fixedDelay = 100000)
-  public void runGetContracts() throws IOException {
+	@Async
+	@Scheduled(fixedDelay = 100000)
+	public void runGetContracts() throws IOException {
 
-    baseService.insertContracts();
-  }
+		baseService.insertContracts();
+	}
 
-  @Async
-  @Scheduled(fixedDelay = 100000, initialDelay = 60000)
-  public void runUpdateContractDetails() {
-    baseService.insertContractDetails();
-  }
+	@Async
+	@Scheduled(fixedDelay = 100000, initialDelay = 60000)
+	public void runUpdateContractDetails() {
+		baseService.insertContractDetails();
+	}
 }
