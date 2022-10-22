@@ -12,7 +12,6 @@ create table contracts
     signing_date               date
 );
 
-comment on table contracts is 'Base Gov Contracts';
 
 create table contract_details
 (

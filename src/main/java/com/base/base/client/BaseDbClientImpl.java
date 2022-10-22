@@ -20,14 +20,12 @@ public class BaseDbClientImpl implements BaseDbClient {
   @Override
   public int insertContracts(List<Contracts> contractsList) {
     String sql =
-        "INSERT INTO contracts\n"
+        "MERGE INTO contracts\n"
             + "(id, contracting_procedure_type, publication_date, contracting, contracted,"
             + " object_brief_description, initial_contractual_price, signing_date)\n"
             + "    VALUES (\n"
             + "            ?,?,?,?,?,?,?,?\n"
-            + "           )\n"
-            + "ON CONFLICT (id)\n"
-            + "DO NOTHING;";
+            + "           )";
     int[] result =
         jdbcTemplate.batchUpdate(
             sql,

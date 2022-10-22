@@ -48,16 +48,24 @@ public class ContractDetails {
     public String contractTypes;
     public String executionDeadline;
     public String cpvs;
+    public String cpvsType;
+
+    public String cpvsDesignation;
     public boolean contractTypeCS;
     public String objectBriefDescription;
     public boolean income;
     public String centralizedProcedure;
     public String executionPlace;
     public String nonWrittenContractJustificationTypes;
+    public String groupMembers;
 
+    public String cpvsValue;
     @JsonDeserialize(using = ContractMoneyDeserializer.class)
     public BigDecimal initialContractualPrice;
 
+    public Boolean aquisitionStateMemberUE;
+
+    public String infoAquisitionStateMemberUE;
     public String contractStatus;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
@@ -367,6 +375,54 @@ public class ContractDetails {
 
     public void setContracted(List<Contracted> contracted) {
         this.contracted = contracted;
+    }
+
+    public String getCpvsType() {
+        return cpvsType;
+    }
+
+    public void setCpvsType(String cpvsType) {
+        this.cpvsType = cpvsType;
+    }
+
+    public String getCpvsDesignation() {
+        return cpvsDesignation;
+    }
+
+    public void setCpvsDesignation(String cpvsDesignation) {
+        this.cpvsDesignation = cpvsDesignation;
+    }
+
+    public String getGroupMembers() {
+        return groupMembers;
+    }
+
+    public void setGroupMembers(String groupMembers) {
+        this.groupMembers = groupMembers;
+    }
+
+    public String getCpvsValue() {
+        return cpvsValue;
+    }
+
+    public void setCpvsValue(String cpvsValue) {
+        this.cpvsValue = cpvsValue;
+    }
+
+    public Boolean getAquisitionStateMemberUE() {
+        return aquisitionStateMemberUE;
+    }
+
+    public void setAquisitionStateMemberUE(Boolean aquisitionStateMemberUE) {
+        this.aquisitionStateMemberUE = aquisitionStateMemberUE;
+    }
+
+    public String getInfoAquisitionStateMemberUE() {
+        return infoAquisitionStateMemberUE;
+    }
+
+    public void setInfoAquisitionStateMemberUE(String infoAquisitionStateMemberUE) {
+        this.infoAquisitionStateMemberUE = infoAquisitionStateMemberUE;
     }
 
     @ManyToMany(cascade = {CascadeType.ALL})
