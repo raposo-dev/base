@@ -2,6 +2,7 @@ package com.base.base.models.contractdetails;
 
 import com.base.base.util.ContractMoneyDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties(value = {"groupMembers"})
 public class ContractDetails {
 	@Id
 	public int id;
@@ -57,7 +59,6 @@ public class ContractDetails {
 	public String centralizedProcedure;
 	public String executionPlace;
 	public String nonWrittenContractJustificationTypes;
-	public String groupMembers;
 
 	public String cpvsValue;
 	@JsonDeserialize(using = ContractMoneyDeserializer.class)
@@ -394,14 +395,6 @@ public class ContractDetails {
 
 	public void setCpvsDesignation(String cpvsDesignation) {
 		this.cpvsDesignation = cpvsDesignation;
-	}
-
-	public String getGroupMembers() {
-		return groupMembers;
-	}
-
-	public void setGroupMembers(String groupMembers) {
-		this.groupMembers = groupMembers;
 	}
 
 	public String getCpvsValue() {

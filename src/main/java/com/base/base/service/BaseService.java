@@ -7,4 +7,5 @@ public interface BaseService {
 	void insertContracts() throws IOException;
 
 	void insertContractDetails();
+
 }

@@ -52,7 +52,7 @@ public class BaseServiceImpl implements BaseService {
 	@Override
 	public void insertContracts() throws IOException {
 		List<Contracts> contractsList;
-		Integer numberOfContracts = 1387283;
+		Integer numberOfContracts = getTotalContracts();
 		logger.info("Got {} contracts from Base", numberOfContracts);
 		logger.info("Inserting missing Contracts into Contracts Table.");
 
@@ -86,6 +86,10 @@ public class BaseServiceImpl implements BaseService {
 		contractsList.stream()
 				.map(this::getBaseContractDetails)
 				.forEach(contractDetailsRepository::save);
+	}
+
+	private int getTotalContracts() throws IOException {
+		return baseHttpClient.getNumberOfContracts("https://www.base.gov.pt/Base4/pt/resultados/");
 	}
 
 	private ContractDetails getBaseContractDetails(Contracts contracts) {
@@ -129,8 +133,8 @@ public class BaseServiceImpl implements BaseService {
 		ObjectMapper mapper = (ObjectMapper) context.getBean("objectMapper");
 		ContractDetails contractDetails;
 		try {
+			logger.info(build.toString());
 			contractDetails = mapper.readValue(build.toString(), ContractDetails.class);
-
 		} catch (Exception e) {
 			logger.error("Error occurred during ContractDetails mapping", e);
 			throw new RuntimeException(e);

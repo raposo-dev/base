@@ -6,6 +6,7 @@ import com.base.base.models.Contracts;
 import com.base.base.models.contractdetails.ContractDetails;
 import com.base.base.repository.ContractDetailsRepository;
 import org.apache.commons.io.IOUtils;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +51,9 @@ public class BaseServiceTest {
 
 	@Mock
 	ContractDetailsRepository contractDetailsRepository;
+
+	@Mock
+	Document document;
 
 
 	@Captor

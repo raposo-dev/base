@@ -8,7 +8,4 @@ ALTER TABLE contract_details
 ADD COLUMN cpvs_value text;
 
 ALTER TABLE contract_details
-ADD COLUMN group_members text;
-
-ALTER TABLE contract_details
 ADD COLUMN info_aquisition_state_memberue text;
