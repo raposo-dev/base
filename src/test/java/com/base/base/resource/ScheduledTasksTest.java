@@ -1,6 +1,6 @@
 package com.base.base.resource;
 
-import com.base.base.service.BaseService;
+import com.base.base.service.BaseIngestionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,19 +18,19 @@ public class ScheduledTasksTest {
 	ScheduledTasks scheduledTasks;
 
 	@Mock
-	BaseService baseService;
+	BaseIngestionService baseIngestionService;
 
 	@Test
 	public void verifyRunGetContractsIsCalled() throws IOException {
 		scheduledTasks.runGetContracts();
 
-		verify(baseService).insertContracts();
+		verify(baseIngestionService).insertContracts();
 	}
 
 	@Test
 	public void verifyUpdateContractDetailsIsCalled() throws IOException {
 		scheduledTasks.runUpdateContractDetails();
 
-		verify(baseService).insertContractDetails();
+		verify(baseIngestionService).insertContractDetails();
 	}
 }

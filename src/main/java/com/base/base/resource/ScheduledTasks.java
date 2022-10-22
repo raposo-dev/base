@@ -1,6 +1,6 @@
 package com.base.base.resource;
 
-import com.base.base.service.BaseService;
+import com.base.base.service.BaseIngestionService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -10,22 +10,22 @@ import java.io.IOException;
 @Component
 public class ScheduledTasks {
 
-	private final BaseService baseService;
+	private final BaseIngestionService baseIngestionService;
 
-	public ScheduledTasks(BaseService baseService) {
-		this.baseService = baseService;
+	public ScheduledTasks(BaseIngestionService baseIngestionService) {
+		this.baseIngestionService = baseIngestionService;
 	}
 
 	@Async
 	@Scheduled(fixedDelay = 100000)
 	public void runGetContracts() throws IOException {
 
-		baseService.insertContracts();
+		baseIngestionService.insertContracts();
 	}
 
 	@Async
 	@Scheduled(fixedDelay = 100000, initialDelay = 60000)
 	public void runUpdateContractDetails() {
-		baseService.insertContractDetails();
+		baseIngestionService.insertContractDetails();
 	}
 }

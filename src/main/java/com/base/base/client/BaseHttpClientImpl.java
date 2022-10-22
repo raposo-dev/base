@@ -12,9 +12,6 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -77,19 +74,5 @@ public class BaseHttpClientImpl implements BaseHttpClient {
         conn.setRequestMethod("GET");
 
         return conn;
-    }
-
-    private Integer getNumberContractsFromSpan(BufferedReader rd) throws IOException {
-        String res = "";
-        String line;
-        while ((line = rd.readLine()) != null) {
-            if (line.contains("Foram encontrados")) {
-                Document doc = Jsoup.parse(line);
-                for (Element e : doc.select("span")) {
-                    res = e.text();
-                }
-            }
-        }
-        return Integer.parseInt(res);
     }
 }

@@ -22,10 +22,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class BaseServiceImpl implements BaseService {
+public class BaseIngestionServiceImpl implements BaseIngestionService {
 	private static final int NUMBER_OF_STEPS = -1000;
 
-	private static final Logger logger = LoggerFactory.getLogger(BaseService.class);
+	private static final Logger logger = LoggerFactory.getLogger(BaseIngestionService.class);
 	final BaseDbClient baseDbClient;
 	final ContractDetailsRepository contractDetailsRepository;
 	final BaseHttpClient baseHttpClient;
@@ -38,7 +38,7 @@ public class BaseServiceImpl implements BaseService {
 	@Value("${base.url.contracts}")
 	String baseUrlContracts;
 
-	public BaseServiceImpl(
+	public BaseIngestionServiceImpl(
 			BaseDbClient baseDbClient,
 			ContractDetailsRepository contractDetailsRepository,
 			BaseHttpClient baseHttpClient,

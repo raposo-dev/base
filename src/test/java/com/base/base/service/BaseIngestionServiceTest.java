@@ -32,7 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class BaseServiceTest {
+public class BaseIngestionServiceTest {
 	private static final String BASE_URL_RESULTS = "http://base.url/results";
 	private static final String BASE_URL_CONTRACTS = "http://base.url/contracts";
 	private static final String BASE_CONTRACTS_MOCKED_RETURN =
@@ -40,7 +40,7 @@ public class BaseServiceTest {
 	private static final String BASE_CONTRACT_DETAILS_MOCKED_RETURN =
 			"{\"increments\":false,\"contractFundamentationType\":\"Não Preenchido\",\"frameworkAgreementProcedureId\":\"Não aplicável.\",\"documents\":[],\"directAwardFundamentationType\":\"Não aplicável\",\"ambientCriteria\":false,\"invitees\":[],\"publicationDate\":\"14-08-2008\",\"observations\":null,\"contractingProcedureUrl\":null,\"endOfContractType\":\"Cumprimento integral do contrato\",\"totalEffectivePrice\":\"6.360,10 €\",\"announcementId\":-1,\"contestants\":[],\"closeDate\":\"29-09-2008\",\"causesDeadlineChange\":null,\"causesPriceChange\":null,\"frameworkAgreementProcedureDescription\":\"Não aplicável.\",\"contracted\":[{\"nif\":\"226962032\",\"description\":\"Ana Sofia Francisco Tomás\",\"id\":46}],\"contracting\":[{\"nif\":\"501121528\",\"description\":\"Câmara Municipal da Lousã\",\"id\":45}],\"contractingProcedureType\":\"Ajuste Direto Regime Geral\",\"executionDeadline\":\"61 dias\",\"contractTypeCS\":false,\"executionPlace\":\"\",\"centralizedProcedure\":null,\"cpvs\":\"\",\"objectBriefDescription\":\"Elaboração das fichas de mão-de-obra, de máquinas e viaturas, para posterior inserção na aplicação informática – Contabilidade de Custos\",\"income\":false,\"nonWrittenContractJustificationTypes\":\"\",\"initialContractualPrice\":\"6.360,10 €\",\"contractStatus\":null,\"contractTypes\":\"\",\"signingDate\":null,\"cocontratantes\":false,\"description\":null,\"id\":20}";
 	@InjectMocks
-	BaseServiceImpl baseService;
+	BaseIngestionServiceImpl baseService;
 
 	@Mock
 	BaseHttpClient baseHttpClient;
