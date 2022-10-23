@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,4 +13,9 @@ import java.util.Optional;
 public interface ContractDetailsRepository extends CrudRepository<ContractDetails, Integer> {
 	@Query("select c from ContractDetails c inner join c.contracted contracted where contracted.nif = ?1")
 	Optional<List<ContractDetails>> findByContracted_Nif(String nif);
+
+	@Query("select c from ContractDetails c where c.publicationDate = ?1")
+	Optional<List<ContractDetails>> findByPublicationDate(Date publicationDate);
+
+
 }

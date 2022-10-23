@@ -36,13 +36,13 @@ public class BaseDbClientImpl implements BaseDbClient {
                                     throws SQLException {
                                 preparedStatement.setInt(1, contractList.get(i).getId());
                                 preparedStatement.setString(2, contractList.get(i).getContractingProcedureType());
-                                preparedStatement.setDate(3, contractList.get(i).getPublicationDate());
+                                preparedStatement.setObject(3, contractList.get(i).getPublicationDate());
                                 preparedStatement.setString(4, contractList.get(i).getContracting());
                                 preparedStatement.setString(5, contractList.get(i).getContracted());
                                 preparedStatement.setString(6, contractList.get(i).getObjectBriefDescription());
                                 preparedStatement.setBigDecimal(
                                         7, contractList.get(i).getInitialContractualPrice());
-                                preparedStatement.setDate(8, contractList.get(i).getSigningDate());
+                                preparedStatement.setObject(8, contractList.get(i).getSigningDate());
                             }
 
                             public int getBatchSize() {

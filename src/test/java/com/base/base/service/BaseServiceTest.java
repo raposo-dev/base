@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +55,7 @@ class BaseServiceTest {
 		List<ContractDetails> t = List.of(contractDetails);
 		when(contractDetailsRepository.findByContracted_Nif(CONTRACTED_NIF)).thenReturn(Optional.of(t));
 
-		var result = baseService.getContractsByContractedNif(CONTRACTED_NIF);
+		var result = baseService.getContractDetailsByContractedNif(CONTRACTED_NIF);
 		assertEquals(t, result);
 	}
 
@@ -61,10 +63,15 @@ class BaseServiceTest {
 	void shouldThrowExceptionWhenContractedNifNotFound() {
 		when(contractDetailsRepository.findByContracted_Nif("mock")).thenReturn(Optional.empty());
 
-		var result = assertThrows(IllegalArgumentException.class, () -> baseService.getContractsByContractedNif("mock"),
+		var result = assertThrows(IllegalArgumentException.class, () -> baseService.getContractDetailsByContractedNif("mock"),
 				"Expected getContractsByContractedNif to throw but didn't");
 
 		assertTrue(result.getMessage().contains("mock"));
+	}
+
+	@Test
+	void shouldReturnContractDetailsByPublicationDate() {
+		when(contractDetailsRepository.findByPublicationDate(Date.from(Instant.ofEpochSecond(1641060233)))).thenReturn();
 	}
 
 	private Contracted createContracted(String nif, String description) {

@@ -7,6 +7,7 @@ import com.base.base.repository.ContractsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -26,9 +27,14 @@ public class BaseServiceImpl implements BaseService {
 	}
 
 	@Override
-	public List<ContractDetails> getContractsByContractedNif(String nif) {
+	public List<ContractDetails> getContractDetailsByContractedNif(String nif) {
 		var maybeListContractDetails = contractDetailsRepository.findByContracted_Nif(nif);
 		return maybeListContractDetails.orElseThrow(
 				() -> new IllegalArgumentException("Couldn't find Contracted Nif - " + nif));
+	}
+
+	@Override
+	public List<ContractDetails> getContractDetailsByPublicationDate(Date date) {
+		return null;
 	}
 }
