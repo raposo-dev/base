@@ -1,15 +1,15 @@
-create table contracts
+create table contract
 (
     id                         integer not null
-        constraint contracts_pk
+        constraint contract_pk
             primary key,
     contracting_procedure_type text,
-    publication_date           date,
+    publication_date           timestamp,
     contracting                text,
     contracted                 text,
     object_brief_description   text,
     initial_contractual_price  numeric,
-    signing_date               date
+    signing_date               timestamp
 );
 
 
@@ -24,14 +24,14 @@ create table contract_details
     direct_award_fundamentation_type          text,
     contracting_procedure_url                 text,
     observations                              text,
-    publication_date                          date,
+    publication_date                          timestamp,
     end_of_contract_type                      text,
     total_effective_price                     numeric,
     contract_fundamentation_type              text,
     framework_agreement_procedure_description text,
     causes_deadline_change                    text,
     causes_price_change                       text,
-    close_date                                date,
+    close_date                                timestamp,
     increments                                boolean,
     contracting_procedure_type                text,
     contract_types                            text,
@@ -45,7 +45,7 @@ create table contract_details
     non_written_contract_justification_types  text,
     initial_contractual_price                 numeric,
     contract_status                           text,
-    signing_date                              date,
+    signing_date                              timestamp,
     cocontratantes                            boolean,
     description                               text
 );

@@ -7,10 +7,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
-public class Contracts {
+public class Contract {
 	public String contractingProcedureType;
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	public Date publicationDate;

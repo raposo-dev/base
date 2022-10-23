@@ -3,7 +3,7 @@ package com.base.base.service;
 import com.base.base.ApplicationConfig;
 import com.base.base.client.BaseDbClient;
 import com.base.base.client.BaseHttpClient;
-import com.base.base.models.Contracts;
+import com.base.base.models.Contract;
 import com.base.base.models.contractdetails.ContractDetails;
 import com.base.base.repository.ContractDetailsRepository;
 import com.base.base.repository.ContractsRepository;
@@ -51,7 +51,7 @@ public class BaseIngestionServiceImpl implements BaseIngestionService {
 
 	@Override
 	public void insertContracts() throws IOException {
-		List<Contracts> contractsList;
+		List<Contract> contractList;
 		Integer numberOfContracts = getTotalContracts();
 		logger.info("Got {} contracts from Base", numberOfContracts);
 		logger.info("Inserting missing Contracts into Contracts Table.");
@@ -74,16 +74,16 @@ public class BaseIngestionServiceImpl implements BaseIngestionService {
 			while ((inputLine = resp.readLine()) != null) {
 				build.append(inputLine);
 			}
-			contractsList = mapContractsList(build);
-			insertContractsList(contractsList);
+			contractList = mapContractsList(build);
+			insertContractsList(contractList);
 		}
 	}
 
 	@Override
 	public void insertContractDetails() {
-		List<Contracts> contractsList = baseDbClient.getListofIdsNotInContractDetails();
-		logger.info("Getting Contract Details for {} contracts.", contractsList.size());
-		contractsList.stream()
+		List<Contract> contractList = baseDbClient.getListofIdsNotInContractDetails();
+		logger.info("Getting Contract Details for {} contracts.", contractList.size());
+		contractList.stream()
 				.map(this::getBaseContractDetails)
 				.forEach(contractDetailsRepository::save);
 	}
@@ -92,10 +92,10 @@ public class BaseIngestionServiceImpl implements BaseIngestionService {
 		return baseHttpClient.getNumberOfContracts("https://www.base.gov.pt/Base4/pt/resultados/");
 	}
 
-	private ContractDetails getBaseContractDetails(Contracts contracts) {
+	private ContractDetails getBaseContractDetails(Contract contract) {
 
 		try {
-			URL url = new URL(baseUrlContracts + "/" + contracts.getId());
+			URL url = new URL(baseUrlContracts + "/" + contract.getId());
 			BufferedReader resp = baseHttpClient.getBaseResponseBufferedReader(url);
 			StringBuilder build = new StringBuilder();
 			String inputLine;
@@ -105,7 +105,7 @@ public class BaseIngestionServiceImpl implements BaseIngestionService {
 			}
 			ContractDetails contractDetails = mapContractDetails(build);
 			if (contractDetails.getId() == 0) {
-				contractDetails.setId(contracts.getId());
+				contractDetails.setId(contract.getId());
 			}
 
 			return contractDetails;
@@ -116,17 +116,17 @@ public class BaseIngestionServiceImpl implements BaseIngestionService {
 
 	}
 
-	private List<Contracts> mapContractsList(StringBuilder build) {
+	private List<Contract> mapContractsList(StringBuilder build) {
 		ObjectMapper mapper = (ObjectMapper) context.getBean("objectMapper");
-		List<Contracts> contractsList;
+		List<Contract> contractList;
 		try {
-			Contracts[] contracts = mapper.readValue(build.toString(), Contracts[].class);
-			contractsList = Arrays.asList(contracts);
+			Contract[] contracts = mapper.readValue(build.toString(), Contract[].class);
+			contractList = Arrays.asList(contracts);
 		} catch (Exception e) {
 			logger.error("Error occurred during Contract mapping", e);
 			throw new RuntimeException(e);
 		}
-		return contractsList;
+		return contractList;
 	}
 
 	private ContractDetails mapContractDetails(StringBuilder build) {
@@ -142,7 +142,7 @@ public class BaseIngestionServiceImpl implements BaseIngestionService {
 		return contractDetails;
 	}
 
-	private void insertContractsList(List<Contracts> contractsList) {
-		baseDbClient.insertContracts(contractsList);
+	private void insertContractsList(List<Contract> contractList) {
+		baseDbClient.insertContracts(contractList);
 	}
 }

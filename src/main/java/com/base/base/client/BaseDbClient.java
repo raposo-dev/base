@@ -1,12 +1,12 @@
 package com.base.base.client;
 
-import com.base.base.models.Contracts;
+import com.base.base.models.Contract;
 
 import java.util.List;
 
 public interface BaseDbClient {
 
-	int insertContracts(List<Contracts> contractsList);
+	void insertContracts(List<Contract> contractList);
 
-	List<Contracts> getListofIdsNotInContractDetails();
+	List<Contract> getListofIdsNotInContractDetails();
 }

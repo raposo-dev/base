@@ -20,39 +20,39 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 public class BaseHttpClientTest {
 
-    private static final String MOCKED_RESP = "<html>\nmockedline\n</html>";
+	private static final String MOCKED_RESP = "<html>\nmockedline\n</html>";
 
-    @InjectMocks
-    BaseHttpClientImpl baseHttpClient;
+	@InjectMocks
+	BaseHttpClientImpl baseHttpClient;
 
-    @Test
-    public void verifyGetBaseResponseBufferedReader() throws IOException {
-        URL url = mock(URL.class);
-        HttpURLConnection huc = mock(HttpURLConnection.class);
-        when(url.openConnection()).thenReturn(huc);
-        when(huc.getInputStream()).thenReturn(inputStreamReaderFromString(MOCKED_RESP));
+	@Test
+	public void verifyGetBaseResponseBufferedReader() throws IOException {
+		URL url = mock(URL.class);
+		HttpURLConnection huc = mock(HttpURLConnection.class);
+		when(url.openConnection()).thenReturn(huc);
+		when(huc.getInputStream()).thenReturn(inputStreamReaderFromString(MOCKED_RESP));
 
-        BufferedReader resp = baseHttpClient.getBaseResponseBufferedReader(url);
-        for (String s : Arrays.asList("<html>", "mockedline", "</html>")) {
-            assertEquals(resp.readLine(), s);
-        }
-    }
+		BufferedReader resp = baseHttpClient.getBaseResponseBufferedReader(url);
+		for (String s : Arrays.asList("<html>", "mockedline", "</html>")) {
+			assertEquals(resp.readLine(), s);
+		}
+	}
 
-    @Test
-    public void verifyGetBaseResponseBufferedReaderWithRange() throws IOException {
-        URL url = mock(URL.class);
-        HttpURLConnection huc = mock(HttpURLConnection.class);
-        when(url.openConnection()).thenReturn(huc);
-        when(huc.getInputStream()).thenReturn(inputStreamReaderFromString(MOCKED_RESP));
+	@Test
+	public void verifyGetBaseResponseBufferedReaderWithRange() throws IOException {
+		URL url = mock(URL.class);
+		HttpURLConnection huc = mock(HttpURLConnection.class);
+		when(url.openConnection()).thenReturn(huc);
+		when(huc.getInputStream()).thenReturn(inputStreamReaderFromString(MOCKED_RESP));
 
-        BufferedReader resp = baseHttpClient.getBaseResponseBufferedReader(url, 1, 10);
+		BufferedReader resp = baseHttpClient.getBaseResponseBufferedReader(url, 1, 10);
 
-        for (String s : Arrays.asList("<html>", "mockedline", "</html>")) {
-            assertEquals(resp.readLine(), s);
-        }
-    }
+		for (String s : Arrays.asList("<html>", "mockedline", "</html>")) {
+			assertEquals(resp.readLine(), s);
+		}
+	}
 
-    private InputStream inputStreamReaderFromString(String string) throws IOException {
-        return IOUtils.toInputStream(string, "UTF-8");
-    }
+	private InputStream inputStreamReaderFromString(String string) throws IOException {
+		return IOUtils.toInputStream(string, "UTF-8");
+	}
 }

@@ -1,6 +1,6 @@
 package com.base.base.client;
 
-import com.base.base.models.Contracts;
+import com.base.base.models.Contract;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,9 +19,9 @@ public class BaseDbClientImpl implements BaseDbClient {
     }
 
     @Override
-    public int insertContracts(List<Contracts> contractsList) {
+    public void insertContracts(List<Contract> contractList) {
         String sql =
-                "MERGE INTO contracts\n"
+                "MERGE INTO contract\n"
                         + "(id, contracting_procedure_type, publication_date, contracting, contracted,"
                         + " object_brief_description, initial_contractual_price, signing_date)\n"
                         + "    VALUES (\n"
@@ -34,33 +34,32 @@ public class BaseDbClientImpl implements BaseDbClient {
                             @Override
                             public void setValues(PreparedStatement preparedStatement, int i)
                                     throws SQLException {
-                                preparedStatement.setInt(1, contractsList.get(i).getId());
-                                preparedStatement.setString(2, contractsList.get(i).getContractingProcedureType());
-                                preparedStatement.setDate(3, contractsList.get(i).getPublicationDate());
-                                preparedStatement.setString(4, contractsList.get(i).getContracting());
-                                preparedStatement.setString(5, contractsList.get(i).getContracted());
-                                preparedStatement.setString(6, contractsList.get(i).getObjectBriefDescription());
+                                preparedStatement.setInt(1, contractList.get(i).getId());
+                                preparedStatement.setString(2, contractList.get(i).getContractingProcedureType());
+                                preparedStatement.setObject(3, contractList.get(i).getPublicationDate());
+                                preparedStatement.setString(4, contractList.get(i).getContracting());
+                                preparedStatement.setString(5, contractList.get(i).getContracted());
+                                preparedStatement.setString(6, contractList.get(i).getObjectBriefDescription());
                                 preparedStatement.setBigDecimal(
-                                        7, contractsList.get(i).getInitialContractualPrice());
-                                preparedStatement.setDate(8, contractsList.get(i).getSigningDate());
+                                        7, contractList.get(i).getInitialContractualPrice());
+                                preparedStatement.setObject(8, contractList.get(i).getSigningDate());
                             }
 
                             public int getBatchSize() {
-                                return contractsList.size();
+                                return contractList.size();
                             }
                         });
-        return result.length;
     }
 
     @Override
-    public List<Contracts> getListofIdsNotInContractDetails() {
+    public List<Contract> getListofIdsNotInContractDetails() {
         String sql =
-                "SELECT contracts.id as id\n"
-                        + "FROM contracts\n"
+                "SELECT contract.id as id\n"
+                        + "FROM contract\n"
                         + "LEFT JOIN\n"
-                        + "    contract_details cd on contracts.id = cd.id\n"
+                        + "    contract_details cd on contract.id = cd.id\n"
                         + "WHERE cd.id is null";
 
-        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Contracts.class));
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Contract.class));
     }
 }
