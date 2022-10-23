@@ -1,7 +1,7 @@
-create table contracts
+create table contract
 (
     id                         integer not null
-        constraint contracts_pk
+        constraint contract_pk
             primary key,
     contracting_procedure_type text,
     publication_date           date,

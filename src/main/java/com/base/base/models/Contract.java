@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 @Entity
-public class Contracts {
+public class Contract {
 	public String contractingProcedureType;
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	public Date publicationDate;

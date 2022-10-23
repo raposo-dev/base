@@ -2,7 +2,7 @@ package com.base.base.service;
 
 import com.base.base.client.BaseDbClient;
 import com.base.base.client.BaseHttpClient;
-import com.base.base.models.Contracts;
+import com.base.base.models.Contract;
 import com.base.base.models.contractdetails.ContractDetails;
 import com.base.base.repository.ContractDetailsRepository;
 import org.apache.commons.io.IOUtils;
@@ -40,7 +40,7 @@ public class BaseIngestionServiceTest {
 	private static final String BASE_CONTRACT_DETAILS_MOCKED_RETURN =
 			"{\"increments\":false,\"contractFundamentationType\":\"Não Preenchido\",\"frameworkAgreementProcedureId\":\"Não aplicável.\",\"documents\":[],\"directAwardFundamentationType\":\"Não aplicável\",\"ambientCriteria\":false,\"invitees\":[],\"publicationDate\":\"14-08-2008\",\"observations\":null,\"contractingProcedureUrl\":null,\"endOfContractType\":\"Cumprimento integral do contrato\",\"totalEffectivePrice\":\"6.360,10 €\",\"announcementId\":-1,\"contestants\":[],\"closeDate\":\"29-09-2008\",\"causesDeadlineChange\":null,\"causesPriceChange\":null,\"frameworkAgreementProcedureDescription\":\"Não aplicável.\",\"contracted\":[{\"nif\":\"226962032\",\"description\":\"Ana Sofia Francisco Tomás\",\"id\":46}],\"contracting\":[{\"nif\":\"501121528\",\"description\":\"Câmara Municipal da Lousã\",\"id\":45}],\"contractingProcedureType\":\"Ajuste Direto Regime Geral\",\"executionDeadline\":\"61 dias\",\"contractTypeCS\":false,\"executionPlace\":\"\",\"centralizedProcedure\":null,\"cpvs\":\"\",\"objectBriefDescription\":\"Elaboração das fichas de mão-de-obra, de máquinas e viaturas, para posterior inserção na aplicação informática – Contabilidade de Custos\",\"income\":false,\"nonWrittenContractJustificationTypes\":\"\",\"initialContractualPrice\":\"6.360,10 €\",\"contractStatus\":null,\"contractTypes\":\"\",\"signingDate\":null,\"cocontratantes\":false,\"description\":null,\"id\":20}";
 	@InjectMocks
-	BaseIngestionServiceImpl baseService;
+	BaseIngestionServiceImpl baseIngestionService;
 
 	@Mock
 	BaseHttpClient baseHttpClient;
@@ -61,8 +61,8 @@ public class BaseIngestionServiceTest {
 
 	@BeforeEach
 	public void setUp() {
-		ReflectionTestUtils.setField(baseService, "baseUrlResults", BASE_URL_RESULTS);
-		ReflectionTestUtils.setField(baseService, "baseUrlContracts", BASE_URL_CONTRACTS);
+		ReflectionTestUtils.setField(baseIngestionService, "baseUrlResults", BASE_URL_RESULTS);
+		ReflectionTestUtils.setField(baseIngestionService, "baseUrlContracts", BASE_URL_CONTRACTS);
 	}
 
 	private BufferedReader bufferedReaderFromString(String string) throws IOException {
@@ -72,38 +72,38 @@ public class BaseIngestionServiceTest {
 
 	@Test
 	public void verifyInsertContractDetails() throws IOException {
-		List<Contracts> listIdsNotInContractDetails = new ArrayList<>();
-		Contracts contractsIds = new Contracts();
-		contractsIds.setId(20);
-		listIdsNotInContractDetails.add(contractsIds);
+		List<Contract> listIdsNotInContractDetails = new ArrayList<>();
+		Contract contractIds = new Contract();
+		contractIds.setId(20);
+		listIdsNotInContractDetails.add(contractIds);
 
 		ContractDetails contractDetails = mapContractDetails();
 
 		when(baseDbClient.getListofIdsNotInContractDetails()).thenReturn(listIdsNotInContractDetails);
-		URL mockedUrlContracts = new URL(BASE_URL_CONTRACTS + "/" + contractsIds.getId());
+		URL mockedUrlContracts = new URL(BASE_URL_CONTRACTS + "/" + contractIds.getId());
 		when(baseHttpClient.getBaseResponseBufferedReader(mockedUrlContracts))
 				.thenReturn(bufferedReaderFromString(BASE_CONTRACT_DETAILS_MOCKED_RETURN));
 
-		baseService.insertContractDetails();
+		baseIngestionService.insertContractDetails();
 
 		verify(contractDetailsRepository).save(listContractDetailsArgumentCaptor.capture());
 		assertEquals(contractDetails.getId(), listContractDetailsArgumentCaptor.getValue().getId());
 	}
 
-	private Contracts mapContracts() {
+	private Contract mapContracts() {
 
 		BigDecimal bd = new BigDecimal("6360.10");
 		bd = bd.setScale(2, RoundingMode.UNNECESSARY);
 
-		Contracts contracts = new Contracts();
-		contracts.setContractingProcedureType("Ajuste Direto Regime Geral");
-		contracts.setContracting("Câmara Municipal da Lousã");
-		contracts.setContracted("Ana Sofia Francisco Tomás");
-		contracts.setObjectBriefDescription(
+		Contract contract = new Contract();
+		contract.setContractingProcedureType("Ajuste Direto Regime Geral");
+		contract.setContracting("Câmara Municipal da Lousã");
+		contract.setContracted("Ana Sofia Francisco Tomás");
+		contract.setObjectBriefDescription(
 				"Elaboração das fichas de mão-de-obra, de máquinas e viaturas, para posterior inserção na aplicação informática – Contabilidade de Custos");
-		contracts.setInitialContractualPrice(bd);
-		contracts.setId(20);
-		return contracts;
+		contract.setInitialContractualPrice(bd);
+		contract.setId(20);
+		return contract;
 	}
 
 	private ContractDetails mapContractDetails() {
